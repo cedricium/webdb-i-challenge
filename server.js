@@ -61,4 +61,19 @@ server.delete('/api/accounts/:id', async (req, res) => {
   }
 })
 
+server.put('/api/accounts/:id', async (req, res) => {
+  const { id } = req.params
+  const accountData = req.body
+  try {
+    await db('accounts').where({ id }).update(accountData)
+    const account = (await db('accounts').where({ id }))[0]
+    res.status(200).json({ ...account })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({
+      error: `Error occurred while attempting to update the account`
+    })
+  }
+})
+
 module.exports = server;
