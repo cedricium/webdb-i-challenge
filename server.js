@@ -20,6 +20,19 @@ server.get('/api/accounts', async (req, res) => {
   }
 })
 
+server.get('/api/accounts/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const account = (await db('accounts').where({ id }))[0]
+    res.json({ ...account })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({
+      error: `Error occurred while attempting to get the account`
+    })
+  }
+})
+
 server.post('/api/accounts', async (req, res) => {
   const accountData = req.body
   try {
