@@ -48,4 +48,17 @@ server.post('/api/accounts', async (req, res) => {
   }
 })
 
+server.delete('/api/accounts/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    await db('accounts').where({ id }).delete()
+    res.status(204).end()
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({
+      error: `Error occurred while attempting to delete the account`
+    })
+  }
+})
+
 module.exports = server;
